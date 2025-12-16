@@ -6,6 +6,8 @@ Türkçe kelime bulma oyunu - Verilen harflerden en fazla kelimeyi bulun!
 
 Kelime Türetme Oyunu, 10 rastgele harften oluşan bir setten en fazla geçerli Türkçe kelimeyi bulmanızı gerektiren eğlenceli ve eğitici bir kelime oyunudur. 100 saniye içinde kelime dağarcığınızı test edin ve en yüksek puanı elde edin!
 
+> **Not:** Bu oyun, popüler "Süper Bulmaca" programından esinlenerek geliştirilmiştir.
+
 ## 🎯 Nasıl Oynanır?
 
 ### Başlangıç
