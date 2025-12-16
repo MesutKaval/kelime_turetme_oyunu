@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelime Türetmece - Süper Bulmaca</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="game-header">
+            <div class="logo">
+                <h1>🎯 KELİME TÜRETMECE</h1>
+            </div>
+            <div class="stats">
+                <div class="timer-container">
+                    <div class="timer-label">SÜRE</div>
+                    <div class="timer" id="timer">100</div>
+                </div>
+                <div class="score-container">
+                    <div class="score-label">PUAN</div>
+                    <div class="score" id="score">0</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Game Area -->
+        <main class="game-area">
+            <!-- Start Screen -->
+            <div class="start-screen" id="startScreen">
+                <div class="start-content">
+                    <h2>Hoş Geldiniz!</h2>
+                    <p>10 harften anlamlı Türkçe kelimeler türetin</p>
+                    <p class="game-rules">
+                        ⏱️ 100 saniye süreniz var<br>
+                        📝 Her kelime için puan kazanın<br>
+                        🎯 Hedef: En fazla kelimeyi bulmak
+                    </p>
+                    <button class="btn-start" id="btnStart">OYUNU BAŞLAT</button>
+                </div>
+            </div>
+
+            <!-- Letters Display -->
+            <div class="letters-section" id="lettersSection" style="display: none;">
+                <h3 class="section-title">HARFLER</h3>
+                <div class="letters-container" id="lettersContainer"></div>
+            </div>
+
+            <!-- Input Section -->
+            <div class="input-section" id="inputSection" style="display: none;">
+                <input type="text" id="wordInput" class="word-input" placeholder="Kelime yazın ve ENTER'a basın..."
+                    autocomplete="off" disabled>
+                <div class="input-hint">Türkçe karakterler: ç, ğ, ı, ö, ş, ü</div>
+            </div>
+
+            <!-- Found Words Section -->
+            <div class="found-words-section" id="foundWordsSection" style="display: none;">
+                <h3 class="section-title">BULUNAN KELİMELER (<span id="foundCount">0</span>)</h3>
+                <div class="found-words-container" id="foundWordsContainer">
+                    <p class="empty-message">Henüz kelime bulunamadı...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- End Game Modal -->
+        <div class="modal" id="endGameModal">
+            <div class="modal-content">
+                <!-- Statistics Section with Title and Score -->
+                <div class="statistics-section">
+                    <div class="stat-item stat-title">
+                        <span class="stat-value">🎉 OYUN BİTTİ!</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Puan:</span>
+                        <span class="stat-value" id="finalScore">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Bulunan:</span>
+                        <span class="stat-value" id="statsFound">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Kaçırılan:</span>
+                        <span class="stat-value" id="statsMissed">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Toplam:</span>
+                        <span class="stat-value" id="statsTotal">0</span>
+                    </div>
+                    <div class="stat-item stat-percentage">
+                        <span class="stat-label">Başarı:</span>
+                        <span class="stat-value" id="statsPercentage">0%</span>
+                    </div>
+                </div>
+
+                <!-- Words Grid by Length -->
+                <div class="modal-body">
+                    <h3 class="words-grid-title">TÜM KELİMELER</h3>
+                    <div class="words-grid" id="wordsGrid">
+                        <!-- Columns will be generated dynamically -->
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-restart" id="btnRestart">YENİDEN OYNA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

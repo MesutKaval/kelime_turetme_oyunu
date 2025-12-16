@@ -1,0 +1,89 @@
+# PROJE: KELİME TÜRETMECE WEB OYUNU (Word Derivation Game)
+
+## 1. PROJE TANIMI VE HEDEF
+Amaç: HTML5, CSS3 ve Modern JavaScript (ES6+) kullanılarak, "Süper Bulmaca" yarışmasındaki kelime türetme etabına benzer bir web tabanlı oyun geliştirmektir. Oyun, verilen rastgele harflerden anlamlı kelimeler türetmeye dayanır.
+
+## 2. DOSYA YAPISI
+- index.html (Oyun arayüzü)
+- style.css (Tüm görsel stiller ve animasyonlar)
+- script.js (Oyun mantığı, algoritmalar ve DOM manipülasyonu)
+- turkce_kelime_listesi.txt (Kelime veritabanı - satır satır ayrılmış ham metin)
+
+## 3. VERİ VE HARF FREKANS MANTIĞI
+
+### A. Harf Havuzu Kuralları
+Oyun her turda toplam 10 harf üretmelidir:
+- 4 adet ÜNLÜ harf (a, e, ı, i, o, ö, u, ü)
+- 6 adet ÜNSÜZ harf (Diğerleri)
+
+### B. Harf Seçim Algoritması (Ağırlıklı Rastgele Seçim)
+Harfler tamamen rastgele değil, aşağıdaki Türkçedeki kullanım sıklıklarına (ağırlıklarına) göre seçilmelidir. Kod, bu listeyi "Ünlüler" ve "Ünsüzler" olarak ikiye ayırıp, kendi içlerinde normalize ederek seçim yapmalıdır.
+
+Verilen Frekans Tablosu:
+'a': 11.92, 'e': 8.91, 'i': 8.60, 'n': 7.48, 'r': 6.95,
+'l': 5.75, 't': 5.54, 'k': 4.68, 's': 4.59, 'u': 4.34,
+'m': 3.75, 'd': 3.74, 'o': 3.51, 'y': 3.49, 'b': 2.85,
+'ı': 2.77, 'z': 2.75, 'v': 2.25, 'g': 2.18, 'h': 1.85,
+'p': 1.64, 'ş': 1.58, 'c': 1.45, 'ç': 1.13, 'f': 0.84,
+'ö': 0.78, 'ü': 0.69, 'ğ': 0.68, 'j': 0.25
+
+## 4. OYUN AKIŞI VE ALGORİTMALAR
+
+### Adım 1: Başlatma ve Veri Yükleme
+- Sayfa yüklendiğinde `turkce_kelime_listesi.txt` dosyasını `fetch` ile oku.
+- Tüm kelimeleri bir diziye (array) aktar.
+- Kelimeleri temizle (varsa boşlukları sil, küçük harfe çevir).
+
+### Adım 2: Oyun Kurulumu
+- "Oyunu Başlat" butonuna basıldığında:
+  1. Yukarıdaki frekanslara göre 4 ünlü, 6 ünsüz seç.
+  2. Seçilen 10 harfi ekranda göster (Kullanıcı için görsel kartlar halinde).
+  3. **Çözücü (Solver) Algoritması:** Arka planda, sözlükteki *tüm* kelimeleri tara. Sadece verilen 10 harf kullanılarak yazılabilecek kelimeleri filtrele ve bir `validWords` (geçerli kelimeler) listesi oluştur.
+     - *Mantık:* Sözlükteki kelimenin harf sayıları <= Eldeki harflerin sayıları olmalı.
+
+### Adım 3: Oynanış (100 Saniye)
+- Geri sayım sayacı başlar (100'den geriye).
+- Kullanıcı bir input alanına kelime yazar ve ENTER tuşuna basar.
+- **Kontrol Mantığı:**
+  1. Girilen kelime `validWords` listesinde var mı?
+  2. Daha önce bulundu mu?
+- **Sonuç:**
+  - DOĞRU: Kelime listeye eklenir, yeşil renk efekti, başarı sesi çalar. Puan eklenir (kelime uzunluğu * 10 puan).
+  - YANLIŞ/GEÇERSİZ: Hata sesi çalar, input alanı kısa süre titrer (shake animation).
+
+### Adım 4: Oyun Sonu
+- Süre 0 olduğunda input alanı devre dışı kalır.
+- Bitiş düdüğü/sesi çalar.
+- Ekranda iki liste gösterilir:
+  1. **Bulunanlar:** Kullanıcının bulduğu kelimeler (Yeşil renk).
+  2. **Kaçırılanlar:** `validWords` listesinde olup kullanıcının bulamadığı kelimeler (Kırmızı renk).
+
+## 5. UI/UX VE TASARIM GEREKSİNİMLERİ (style.css)
+
+- **Tema:** Modern, temiz, oyun odaklı (Yarışma programı havasında).
+- **Renk Paleti:**
+  - Arka plan: Koyu lacivert veya koyu gri (#1a1a2e).
+  - Harf Kartları: Parlak sarı veya beyaz, kutucuklu tasarım.
+  - Doğru Kelime: Parlak Yeşil (#2ecc71).
+  - Kaçırılan Kelime: Kırmızı (#e74c3c).
+- **Yerleşim (Layout):**
+  - Üst: Sayaç (Büyük font) ve Puan.
+  - Orta: Rastgele 10 Harf (Yan yana dizilmiş kutular).
+  - Alt: Input alanı (Büyük, odaklanmış).
+  - En Alt: Bulunan kelimelerin listelendiği kaydırılabilir alan.
+- **Animasyonlar:**
+  - Harfler gelirken sırayla açılma efekti.
+  - Doğru kelimede liste elemanının "pop-up" efekti.
+  - Yanlış kelimede input alanının titremesi (shake).
+
+## 6. SES EFEKTLERİ (AudioContext veya HTML Audio)
+Harici dosya bağımlılığını azaltmak için JavaScript `AudioContext` kullanılarak basit 'beep' sesleri sentezlenebilir veya placeholder dosya yolları konulabilir:
+- `correct.mp3`: Başarılı giriş (Ting sesi).
+- `wrong.mp3`: Hatalı giriş (Buzz sesi).
+- `tick.mp3`: Son 10 saniye için saat tiktak sesi.
+- `end.mp3`: Süre bitiş sesi.
+
+## 7. ÖZEL NOTLAR
+- Kod, modüler olmalı.
+- Türkçe karakter sorunlarına (I/i, Ğ/ğ, Ş/ş) dikkat edilmeli. `toLocaleLowerCase('tr-TR')` kullanılmalı.
+- `turkce_kelime_listesi.txt` dosyası olmadığı durumda hata vermemeli, demo amaçlı küçük bir array ile çalışabilmeli (fallback).
