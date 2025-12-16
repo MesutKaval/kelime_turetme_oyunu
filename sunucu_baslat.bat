@@ -1,6 +1,6 @@
 @echo off
 echo ========================================
-echo   SUPER BULMACA - Yerel Sunucu
+echo   KELİME TÜRETME OYUNU - Yerel Sunucu
 echo ========================================
 echo.
 echo Sunucu baslatiliyor...
