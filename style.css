@@ -514,12 +514,13 @@ body {
 
 .words-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(120px, max-content));
     gap: 10px;
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 70vh;
     padding: 10px;
+    justify-content: start;
 }
 
 .words-grid::-webkit-scrollbar {
@@ -534,6 +535,42 @@ body {
 .words-grid::-webkit-scrollbar-thumb {
     background: rgba(78, 205, 196, 0.5);
     border-radius: 10px;
+}
+
+/* Dynamic column widths based on word length */
+.word-column-4 {
+    min-width: 120px;
+    max-width: 120px;
+}
+
+.word-column-5 {
+    min-width: 140px;
+    max-width: 140px;
+}
+
+.word-column-6 {
+    min-width: 160px;
+    max-width: 160px;
+}
+
+.word-column-7 {
+    min-width: 180px;
+    max-width: 180px;
+}
+
+.word-column-8 {
+    min-width: 200px;
+    max-width: 200px;
+}
+
+.word-column-9 {
+    min-width: 220px;
+    max-width: 220px;
+}
+
+.word-column-10 {
+    min-width: 240px;
+    max-width: 240px;
 }
 
 .word-column {

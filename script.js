@@ -384,6 +384,9 @@ function endGame() {
         const column = document.createElement('div');
         column.className = 'word-column';
 
+        // Add width class based on word length
+        column.classList.add(`word-column-${length}`);
+
         // Column header
         const header = document.createElement('div');
         header.className = 'word-column-header';
