@@ -133,6 +133,7 @@ async function loadDictionary() {
 // ===== WEIGHTED RANDOM SELECTION =====
 function weightedRandomSelection(items, weights, count) {
     const selected = [];
+    const letterCounts = {}; // Track how many times each letter is selected
 
     for (let i = 0; i < count; i++) {
         if (items.length === 0) break;
@@ -141,16 +142,38 @@ function weightedRandomSelection(items, weights, count) {
         let random = Math.random() * totalWeight;
 
         let selectedIndex = 0;
-        for (let j = 0; j < weights.length; j++) {
-            random -= weights[j];
-            if (random <= 0) {
-                selectedIndex = j;
+        let attempts = 0;
+        const maxAttempts = 100; // Prevent infinite loop
+
+        // Keep trying until we find a letter that hasn't been used twice
+        while (attempts < maxAttempts) {
+            random = Math.random() * totalWeight;
+            selectedIndex = 0;
+
+            for (let j = 0; j < weights.length; j++) {
+                random -= weights[j];
+                if (random <= 0) {
+                    selectedIndex = j;
+                    break;
+                }
+            }
+
+            const selectedLetter = items[selectedIndex];
+
+            // Check if this letter has been used less than 2 times
+            if (!letterCounts[selectedLetter] || letterCounts[selectedLetter] < 2) {
+                selected.push(selectedLetter);
+                letterCounts[selectedLetter] = (letterCounts[selectedLetter] || 0) + 1;
                 break;
             }
+
+            attempts++;
         }
 
-        selected.push(items[selectedIndex]);
-        // Removed splice to allow duplicate letters
+        // If we couldn't find a valid letter after max attempts, just add any letter
+        if (attempts >= maxAttempts) {
+            selected.push(items[selectedIndex]);
+        }
     }
 
     return selected;
