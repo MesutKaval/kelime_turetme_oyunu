@@ -593,11 +593,8 @@ body {
 }
 
 .word-column-list {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 4px;
-    align-content: flex-start;
+    column-count: 4;
+    column-gap: 4px;
     max-height: 65vh;
     overflow-y: auto;
 }
@@ -628,6 +625,8 @@ body {
     transition: all 0.2s ease;
     flex-shrink: 0;
     white-space: nowrap;
+    break-inside: avoid;
+    margin-bottom: 4px;
 }
 
 .word-item.found {
