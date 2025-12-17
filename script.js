@@ -413,7 +413,8 @@ function endGame() {
         wordsGrid.appendChild(column);
     });
 
-    // Dynamic font sizing based on total word count
+
+    // Show modal
     const totalValidWords = gameState.validWords.length;
     let fontSize = 0.95; // Default font size in rem
 
