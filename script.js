@@ -100,27 +100,28 @@ const elements = {
     btnRestart: document.getElementById('btnRestart')
 };
 
+// ===== NORMALIZE WORD (Remove circumflex accents) =====
+function normalizeWord(word) {
+    return word
+        .replace(/â/g, 'a')
+        .replace(/Â/g, 'A')
+        .replace(/î/g, 'i')
+        .replace(/Î/g, 'I')
+        .replace(/û/g, 'u')
+        .replace(/Û/g, 'U');
+}
+
 // ===== INITIALIZATION =====
 async function loadDictionary() {
     try {
         const response = await fetch('turkce_kelime_listesi.txt');
         const text = await response.text();
-        gameState.wordDictionary = text
-            .split('\n')
-            .map(word => word.trim().toLocaleLowerCase('tr-TR'))
-            .filter(word => word.length >= 4);
+        gameState.wordDictionary = text.split('\n')
+            .map(word => normalizeWord(word.trim().toLocaleLowerCase('tr-TR'))) // Normalize circumflex
+            .filter(word => word.length >= 4); // Minimum 4 letters
         console.log(`Sözlük yüklendi: ${gameState.wordDictionary.length} kelime`);
     } catch (error) {
-        console.warn('Sözlük dosyası yüklenemedi, demo kelimeler kullanılıyor');
-        // Fallback demo word list
-        gameState.wordDictionary = [
-            'ev', 'el', 'at', 'su', 'ot', 'ok', 'ay', 'göz', 'kol', 'baş',
-            'dal', 'kal', 'sal', 'mal', 'bal', 'hal', 'yol', 'gül', 'kır', 'yer',
-            'ver', 'gel', 'git', 'dur', 'tur', 'kur', 'bul', 'yaz', 'oku', 'ara',
-            'dere', 'kale', 'bale', 'yare', 'kare', 'tane', 'sade', 'yade', 'rade',
-            'masa', 'kasa', 'sasa', 'dere', 'tere', 'bere', 'kere', 'sere',
-            'kedi', 'deli', 'beli', 'teli', 'seli', 'yeli', 'kedi', 'gemi',
-            'deniz', 'reniz', 'teniz', 'demir', 'remir', 'temir', 'semir',
+        'deniz', 'reniz', 'teniz', 'demir', 'remir', 'temir', 'semir',
             'kartal', 'bartal', 'sartal', 'dartal', 'tartal', 'martal',
             'ağaç', 'bağaç', 'dağaç', 'sağaç', 'yağaç', 'kağıt', 'sağıt',
             'kitap', 'sitap', 'ritap', 'mitap', 'kalem', 'salem', 'dalem',
@@ -296,7 +297,8 @@ function updateScore(points) {
 function submitWord() {
     if (!gameState.isPlaying) return;
 
-    const input = elements.wordInput.value.trim().toLocaleLowerCase('tr-TR');
+    const rawInput = elements.wordInput.value.trim().toLocaleLowerCase('tr-TR');
+    const input = normalizeWord(rawInput); // Normalize circumflex characters
 
     if (!input) return;
 
