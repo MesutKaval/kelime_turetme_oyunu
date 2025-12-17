@@ -593,14 +593,19 @@ body {
 }
 
 .word-column-list {
-    column-count: 4;
-    column-gap: 4px;
-    max-height: 65vh;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 4px;
+    height: calc(16 * (0.9rem + 10px + 4px));
+    /* 16 rows: font-size + padding + margin */
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-content: flex-start;
 }
 
 .word-column-list::-webkit-scrollbar {
-    width: 6px;
+    height: 6px;
 }
 
 .word-column-list::-webkit-scrollbar-track {
