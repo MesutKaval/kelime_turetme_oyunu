@@ -413,6 +413,33 @@ function endGame() {
         wordsGrid.appendChild(column);
     });
 
+    // Dynamic font sizing based on total word count
+    const totalValidWords = gameState.validWords.length;
+    let fontSize = 0.95; // Default font size in rem
+
+    if (totalValidWords > 300) {
+        fontSize = 0.55;
+    } else if (totalValidWords > 250) {
+        fontSize = 0.6;
+    } else if (totalValidWords > 200) {
+        fontSize = 0.65;
+    } else if (totalValidWords > 150) {
+        fontSize = 0.7;
+    } else if (totalValidWords > 100) {
+        fontSize = 0.75;
+    } else if (totalValidWords > 80) {
+        fontSize = 0.8;
+    } else if (totalValidWords > 60) {
+        fontSize = 0.85;
+    } else if (totalValidWords > 40) {
+        fontSize = 0.9;
+    }
+
+    // Apply font size to all word items
+    document.querySelectorAll('.word-item').forEach(item => {
+        item.style.fontSize = `${fontSize}rem`;
+    });
+
     // Show modal
     elements.endGameModal.classList.add('show');
 }
