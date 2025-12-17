@@ -133,27 +133,24 @@ async function loadDictionary() {
 // ===== WEIGHTED RANDOM SELECTION =====
 function weightedRandomSelection(items, weights, count) {
     const selected = [];
-    const availableItems = [...items];
-    const availableWeights = [...weights];
 
     for (let i = 0; i < count; i++) {
-        if (availableItems.length === 0) break;
+        if (items.length === 0) break;
 
-        const totalWeight = availableWeights.reduce((sum, w) => sum + w, 0);
+        const totalWeight = weights.reduce((sum, w) => sum + w, 0);
         let random = Math.random() * totalWeight;
 
         let selectedIndex = 0;
-        for (let j = 0; j < availableWeights.length; j++) {
-            random -= availableWeights[j];
+        for (let j = 0; j < weights.length; j++) {
+            random -= weights[j];
             if (random <= 0) {
                 selectedIndex = j;
                 break;
             }
         }
 
-        selected.push(availableItems[selectedIndex]);
-        availableItems.splice(selectedIndex, 1);
-        availableWeights.splice(selectedIndex, 1);
+        selected.push(items[selectedIndex]);
+        // Removed splice to allow duplicate letters
     }
 
     return selected;
