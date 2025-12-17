@@ -121,13 +121,9 @@ async function loadDictionary() {
             .filter(word => word.length >= 4); // Minimum 4 letters
         console.log(`Sözlük yüklendi: ${gameState.wordDictionary.length} kelime`);
     } catch (error) {
-        'deniz', 'reniz', 'teniz', 'demir', 'remir', 'temir', 'semir',
-            'kartal', 'bartal', 'sartal', 'dartal', 'tartal', 'martal',
-            'ağaç', 'bağaç', 'dağaç', 'sağaç', 'yağaç', 'kağıt', 'sağıt',
-            'kitap', 'sitap', 'ritap', 'mitap', 'kalem', 'salem', 'dalem',
-            'masa', 'kasa', 'sasa', 'yasa', 'dere', 'tere', 'bere', 'sere',
-            'erik', 'erim', 'erit', 'eris', 'erik', 'erin', 'eril', 'erik'
-        ];
+        console.error('Sözlük yüklenemedi:', error);
+        // Fallback: demo words
+        gameState.wordDictionary = ['test', 'kelime', 'oyun', 'deneme'];
     }
 }
 
