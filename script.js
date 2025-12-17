@@ -55,6 +55,12 @@ function playWrongSound() {
     playSound(200, 0.3, 'sawtooth');
 }
 
+function playDuplicateSound() {
+    // Different sound for duplicate words - double beep
+    playSound(400, 0.15, 'square');
+    setTimeout(() => playSound(400, 0.15, 'square'), 150);
+}
+
 function playTickSound() {
     playSound(440, 0.05);
 }
@@ -286,9 +292,19 @@ function submitWord() {
 
     // Check if already found
     if (gameState.foundWords.includes(input)) {
-        playWrongSound();
+        playDuplicateSound();
         elements.wordInput.classList.add('shake');
         setTimeout(() => elements.wordInput.classList.remove('shake'), 500);
+
+        // Flash the existing word in the found words list
+        const wordTags = elements.foundWordsContainer.querySelectorAll('.word-tag');
+        wordTags.forEach(tag => {
+            if (tag.textContent === input) {
+                tag.classList.add('flash-duplicate');
+                setTimeout(() => tag.classList.remove('flash-duplicate'), 1000);
+            }
+        });
+
         elements.wordInput.value = '';
         return;
     }
