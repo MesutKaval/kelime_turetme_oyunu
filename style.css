@@ -514,7 +514,7 @@ body {
 
 .words-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
+    grid-template-columns: repeat(auto-fit, minmax(300px, max-content));
     gap: 10px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -540,38 +540,38 @@ body {
 /* Dynamic column widths based on word length */
 /* Each width calculated to fit 4 words side-by-side */
 .word-column-4 {
-    min-width: 200px;
-    max-width: 200px;
+    min-width: 300px;
+    max-width: 300px;
 }
 
 .word-column-5 {
-    min-width: 240px;
-    max-width: 240px;
+    min-width: 340px;
+    max-width: 340px;
 }
 
 .word-column-6 {
-    min-width: 280px;
-    max-width: 280px;
+    min-width: 380px;
+    max-width: 380px;
 }
 
 .word-column-7 {
-    min-width: 320px;
-    max-width: 320px;
+    min-width: 420px;
+    max-width: 420px;
 }
 
 .word-column-8 {
-    min-width: 360px;
-    max-width: 360px;
+    min-width: 460px;
+    max-width: 460px;
 }
 
 .word-column-9 {
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 500px;
+    max-width: 500px;
 }
 
 .word-column-10 {
-    min-width: 440px;
-    max-width: 440px;
+    min-width: 540px;
+    max-width: 540px;
 }
 
 .word-column {
