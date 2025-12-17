@@ -597,8 +597,8 @@ body {
     flex-direction: column;
     flex-wrap: wrap;
     gap: 4px;
-    height: calc(16 * (0.9rem + 10px + 4px));
-    /* 16 rows: font-size + padding + margin */
+    height: calc(16 * (0.9rem + 10px + 4px) + 50px);
+    /* 16 rows + extra 50px to prevent vertical scroll */
     overflow-x: auto;
     overflow-y: hidden;
     align-content: flex-start;
