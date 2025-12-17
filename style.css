@@ -597,7 +597,7 @@ body {
     flex-direction: column;
     flex-wrap: wrap;
     gap: 4px;
-    height: calc(16 * (0.9rem + 10px + 4px) + 100px);
+    height: calc(16 * (0.9rem + 10px + 4px) + 80px);
     /* 16 rows + extra 100px to prevent 17th row */
     overflow-x: auto;
     overflow-y: hidden;
