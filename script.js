@@ -199,7 +199,7 @@ function startGame() {
     gameState.letters = generateLetters();
     gameState.foundWords = [];
     gameState.score = 0;
-    gameState.timeLeft = 100;
+    gameState.timeLeft = 5;
     gameState.isPlaying = true;
 
     // Find all valid words (solver algorithm)
