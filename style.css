@@ -713,6 +713,119 @@ body {
     transform: translateY(-1px);
 }
 
+/* ===== DEFINITION MODAL ===== */
+.definition-modal-content {
+    width: 90%;
+    max-width: 600px;
+    height: auto;
+    max-height: 80vh;
+    padding: 0;
+    overflow: hidden;
+}
+
+.definition-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.definition-header h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #4ecdc4;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.btn-close {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: 2px solid rgba(231, 76, 60, 0.4);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.btn-close:hover {
+    background: rgba(231, 76, 60, 0.4);
+    transform: rotate(90deg);
+}
+
+.definition-body {
+    padding: 30px;
+    overflow-y: auto;
+    max-height: calc(80vh - 100px);
+}
+
+.definition-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.definition-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.definition-body::-webkit-scrollbar-thumb {
+    background: rgba(78, 205, 196, 0.5);
+    border-radius: 10px;
+}
+
+.loading-spinner {
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 40px;
+}
+
+.definition-content {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+}
+
+.definition-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border-left: 4px solid #4ecdc4;
+}
+
+.definition-meaning {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.definition-example {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+    margin-top: 8px;
+    padding-left: 15px;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.error-message {
+    text-align: center;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    padding: 40px;
+}
+
+.word-item {
+    cursor: pointer;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     .game-header {

@@ -97,7 +97,11 @@ const elements = {
     missedCount: document.getElementById('missedCount'),
     foundWordsList: document.getElementById('foundWordsList'),
     missedWordsList: document.getElementById('missedWordsList'),
-    btnRestart: document.getElementById('btnRestart')
+    btnRestart: document.getElementById('btnRestart'),
+    definitionModal: document.getElementById('definitionModal'),
+    definitionWord: document.getElementById('definitionWord'),
+    definitionBody: document.getElementById('definitionBody'),
+    btnCloseDefinition: document.getElementById('btnCloseDefinition')
 };
 
 // ===== NORMALIZE WORD (Remove circumflex accents) =====
@@ -443,6 +447,10 @@ function endGame() {
             }
 
             wordItem.textContent = word;
+
+            // Add click handler to show definition
+            wordItem.addEventListener('click', () => showWordDefinition(word));
+
             wordList.appendChild(wordItem);
         });
 
@@ -468,12 +476,91 @@ function restartGame() {
     elements.foundWordsSection.style.display = 'none';
 }
 
+// ===== WORD DEFINITION FROM TDK =====
+async function showWordDefinition(word) {
+    // Show modal
+    elements.definitionModal.classList.add('show');
+    elements.definitionWord.textContent = word;
+    elements.definitionBody.innerHTML = '<div class="loading-spinner">Yükleniyor...</div>';
+
+    try {
+        // TDK API endpoint
+        const response = await fetch(`https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}`);
+
+        if (!response.ok) {
+            throw new Error('Bağlantı hatası');
+        }
+
+        const data = await response.json();
+
+        if (!data || data.error || !data[0] || !data[0].anlamlarListe) {
+            elements.definitionBody.innerHTML = '<div class="error-message">Bu kelime için anlam bulunamadı.</div>';
+            return;
+        }
+
+        // Build definition HTML
+        let definitionHTML = '<div class="definition-content">';
+
+        data[0].anlamlarListe.forEach((anlam, index) => {
+            definitionHTML += `
+                <div class="definition-item">
+                    <div class="definition-meaning">
+                        <strong>${index + 1}.</strong> ${anlam.anlam}
+                    </div>`;
+
+            // Add examples if available
+            if (anlam.orneklerListe && anlam.orneklerListe.length > 0) {
+                anlam.orneklerListe.forEach(ornek => {
+                    if (ornek.ornek) {
+                        definitionHTML += `
+                            <div class="definition-example">
+                                "${ornek.ornek}"
+                            </div>`;
+                    }
+                });
+            }
+
+            definitionHTML += '</div>';
+        });
+
+        definitionHTML += '</div>';
+        elements.definitionBody.innerHTML = definitionHTML;
+
+    } catch (error) {
+        console.error('TDK API hatası:', error);
+        elements.definitionBody.innerHTML = '<div class="error-message">⚠️ Bağlantı yok</div>';
+    }
+}
+
+function closeDefinitionModal() {
+    elements.definitionModal.classList.remove('show');
+}
+
 // ===== EVENT LISTENERS =====
 elements.btnRestart.addEventListener('click', restartGame);
+elements.btnCloseDefinition.addEventListener('click', closeDefinitionModal);
+
+// Close definition modal when clicking outside
+elements.definitionModal.addEventListener('click', (e) => {
+    if (e.target === elements.definitionModal) {
+        closeDefinitionModal();
+    }
+});
 
 elements.wordInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         submitWord();
+    }
+});
+
+// Spacebar to start game
+window.addEventListener('keydown', (e) => {
+    // Only trigger if start screen is visible and button is enabled
+    if (e.code === 'Space' &&
+        elements.startScreen.style.display !== 'none' &&
+        !elements.btnStart.disabled) {
+        e.preventDefault(); // Prevent page scroll
+        elements.btnStart.click();
     }
 });
 
