@@ -99,6 +99,7 @@ body {
 /* ===== START SCREEN ===== */
 .start-screen {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 60vh;
@@ -143,6 +144,12 @@ body {
     text-shadow: 0 0 10px rgba(255, 217, 61, 0.3);
 }
 
+.game-rules .highlight {
+    color: #ffc107;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+}
+
 .btn-start {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -167,12 +174,13 @@ body {
 }
 
 .developer-credit {
-    margin-top: 40px;
-    font-size: 0.75rem;
+    margin-top: 20px;
+    font-size: 1.2rem;
     color: rgba(255, 255, 255, 0.4);
     font-weight: 400;
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 0.5px;
+    text-align: center;
 }
 
 /* ===== GAME AREA ===== */
