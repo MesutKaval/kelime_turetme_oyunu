@@ -166,6 +166,15 @@ body {
     transform: translateY(-1px);
 }
 
+.developer-credit {
+    margin-top: 40px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 400;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.5px;
+}
+
 /* ===== GAME AREA ===== */
 .game-area {
     margin-top: 20px;
