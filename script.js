@@ -484,8 +484,11 @@ async function showWordDefinition(word) {
     elements.definitionBody.innerHTML = '<div class="loading-spinner">Yükleniyor...</div>';
 
     try {
-        // TDK API endpoint
-        const response = await fetch(`https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}`);
+        // TDK API endpoint with CORS proxy
+        const tdkUrl = `https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}`;
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(tdkUrl)}`;
+
+        const response = await fetch(proxyUrl);
 
         if (!response.ok) {
             throw new Error('Bağlantı hatası');
