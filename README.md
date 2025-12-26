@@ -2,6 +2,12 @@
 
 Türkçe kelime bulma oyunu - Verilen harflerden en fazla kelimeyi bulun!
 
+## 🌐 Canlı Demo
+
+**[🎮 Oyunu Şimdi Oyna!](https://kelimeturetme.netlify.app/)**
+
+> Oyunu tarayıcınızda hemen deneyebilirsiniz - kurulum gerektirmez!
+
 ## 📖 Oyun Hakkında
 
 Kelime Türetme Oyunu, 10 rastgele harften oluşan bir setten en fazla geçerli Türkçe kelimeyi bulmanızı gerektiren eğlenceli ve eğitici bir kelime oyunudur. 100 saniye içinde kelime dağarcığınızı test edin ve en yüksek puanı elde edin!
