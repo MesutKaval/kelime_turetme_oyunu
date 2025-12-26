@@ -8,6 +8,17 @@ Kelime Türetme Oyunu, 10 rastgele harften oluşan bir setten en fazla geçerli 
 
 > **Not:** Bu oyun, popüler "Süper Bulmaca" programından esinlenerek geliştirilmiştir. Oyun, Antigravity aracılığıyla Claude Sonnet 4.5 yapay zeka modeli kullanılarak oluşturulmuştur.
 
+## 📸 Ekran Görüntüleri
+
+### Başlangıç Ekranı
+![Başlangıç Ekranı](screenshots/start_screen.png)
+
+### Oyun Ekranı
+![Oyun Ekranı](screenshots/gameplay.png)
+
+### Sonuç Ekranı
+![Sonuç Ekranı](screenshots/results.png)
+
 ## 🎯 Nasıl Oynanır?
 
 ### Başlangıç
