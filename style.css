@@ -70,8 +70,8 @@ body {
 }
 
 .timer {
-    color: #4ecdc4;
-    text-shadow: 0 0 20px rgba(78, 205, 196, 0.5);
+    color: #3dcc8e;
+    text-shadow: 0 0 20px rgba(61, 204, 142, 0.5);
 }
 
 .timer.warning {
@@ -379,7 +379,7 @@ body {
 }
 
 .found-words-container::-webkit-scrollbar-thumb {
-    background: rgba(78, 205, 196, 0.5);
+    background: rgba(61, 204, 142, 0.5);
     border-radius: 10px;
 }
 
@@ -471,7 +471,7 @@ body {
 }
 
 .modal-content {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    background: linear-gradient(135deg, #0a1f1a 0%, #113322 100%);
     border-radius: 0;
     padding: 30px;
     width: 100vw;
@@ -577,7 +577,7 @@ body {
 }
 
 .words-grid::-webkit-scrollbar-thumb {
-    background: rgba(78, 205, 196, 0.5);
+    background: rgba(61, 204, 142, 0.5);
     border-radius: 10px;
 }
 
@@ -658,7 +658,7 @@ body {
 }
 
 .word-column-list::-webkit-scrollbar-thumb {
-    background: rgba(78, 205, 196, 0.3);
+    background: rgba(61, 204, 142, 0.3);
     border-radius: 10px;
 }
 
@@ -793,7 +793,7 @@ body {
 }
 
 .definition-body::-webkit-scrollbar-thumb {
-    background: rgba(78, 205, 196, 0.5);
+    background: rgba(61, 204, 142, 0.5);
     border-radius: 10px;
 }
 
