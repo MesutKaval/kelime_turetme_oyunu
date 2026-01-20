@@ -4,7 +4,7 @@ Türkçe kelime bulma oyunu - Verilen harflerden en fazla kelimeyi bulun!
 
 ## 🌐 Canlı Demo
 
-**[🎮 Oyunu Github Pages Üzerinden Oyna!](https://MesutKaval.github.io/super_bulmaca/)**
+**[🎮 Oyunu Github Pages Üzerinden Oyna!](https://mesutkaval.github.io/kelime_turetme_oyunu/)**
 
 > Oyunu tarayıcınızda hemen deneyebilirsiniz - kurulum gerektirmez!
 
