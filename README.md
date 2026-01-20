@@ -17,13 +17,13 @@ Kelime Türetme Oyunu, 10 rastgele harften oluşan bir setten en fazla geçerli 
 ## 📸 Ekran Görüntüleri
 
 ### Başlangıç Ekranı
-![Başlangıç Ekranı](screenshots/start_screen.png)
+![Başlangıç Ekranı](screenshots/start_screen.png?v=1)
 
 ### Oyun Ekranı
-![Oyun Ekranı](screenshots/gameplay.png)
+![Oyun Ekranı](screenshots/gameplay.png?v=1)
 
 ### Sonuç Ekranı
-![Sonuç Ekranı](screenshots/results.png)
+![Sonuç Ekranı](screenshots/results.png?v=1)
 
 ## 🎯 Nasıl Oynanır?
 
