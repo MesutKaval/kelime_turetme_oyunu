@@ -780,7 +780,7 @@ function switchToNextPlayer() {
     gameState.currentPlayerIndex = (gameState.currentPlayerIndex + 1) % gameState.players.length;
 
     // Start next turn
-    setTimeout(() => startPlayerTurn(), 500);
+    setTimeout(() => startPlayerTurn(), 200);
 }
 
 function checkRoundCompletion() {
