@@ -802,8 +802,11 @@ function submitWordMultiplayer() {
     if (!gameState.validWords.includes(input)) {
         playWrongSound();
         elements.wordInput.classList.add('shake');
-        setTimeout(() => elements.wordInput.classList.remove('shake'), 500);
-        elements.wordInput.value = '';
+        setTimeout(() => {
+            elements.wordInput.classList.remove('shake');
+            elements.wordInput.value = '';
+            switchToNextPlayer(); // Auto-switch on wrong answer
+        }, 500);
         return;
     }
 
@@ -811,18 +814,11 @@ function submitWordMultiplayer() {
     if (gameState.foundWords.includes(input)) {
         playDuplicateSound();
         elements.wordInput.classList.add('shake');
-        setTimeout(() => elements.wordInput.classList.remove('shake'), 500);
-
-        // Flash the existing word
-        const wordTags = elements.foundWordsContainer.querySelectorAll('.word-tag');
-        wordTags.forEach(tag => {
-            if (tag.textContent === input) {
-                tag.classList.add('flash-duplicate');
-                setTimeout(() => tag.classList.remove('flash-duplicate'), 1000);
-            }
-        });
-
-        elements.wordInput.value = '';
+        setTimeout(() => {
+            elements.wordInput.classList.remove('shake');
+            elements.wordInput.value = '';
+            switchToNextPlayer(); // Auto-switch on duplicate
+        }, 500);
         return;
     }
 
