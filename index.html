@@ -38,15 +38,51 @@
                 <div class="start-content">
                     <h2>Merhaba!</h2>
                     <p class="yellow-text">Rastgele 10 harften en az 4 harfli anlamlı Türkçe kelimeler türetin</p>
-                    <p class="game-rules">
-                        ⏱️ 100 saniye süreniz var<br>
-                        📝 Her kelime için puan kazanın<br>
-                        🎯 Hedef: En fazla kelimeyi bulmak<br>
-                        🎉 En uzun kelimeyi bulun, <span class="highlight">2x puan</span> kazanın!
-                    </p>
-                    <button class="btn-start" id="btnStart">OYUNU BAŞLAT</button>
+                    <div class="mode-selection">
+                        <button class="mode-btn" id="btnSinglePlayer">
+                            <span class="mode-icon">👤</span>
+                            <span class="mode-title">TEK OYUNCU</span>
+                            <span class="mode-desc">100 saniye süre ile klasik mod</span>
+                        </button>
+                        <button class="mode-btn" id="btnMultiplayer">
+                            <span class="mode-icon">👥</span>
+                            <span class="mode-title">ÇOK OYUNCU</span>
+                            <span class="mode-desc">Sırayla oyna, en yüksek puanı topla</span>
+                        </button>
+                    </div>
                 </div>
                 <p class="developer-credit">Geliştirici: Mesut Kaval</p>
+            </div>
+
+            <!-- Player Setup Screen -->
+            <div class="player-setup-screen" id="playerSetupScreen" style="display: none;">
+                <div class="setup-content">
+                    <h2>Oyuncu Kurulumu</h2>
+                    <div class="player-inputs-container" id="playerInputsContainer">
+                        <input type="text" class="player-input" placeholder="1. Oyuncu Adı" maxlength="15">
+                        <input type="text" class="player-input" placeholder="2. Oyuncu Adı" maxlength="15">
+                    </div>
+                    <button class="add-player-btn" id="btnAddPlayer">+ Oyuncu Ekle</button>
+                    <div class="round-selection">
+                        <label for="roundSelector">Kaç el oynanacak?</label>
+                        <select id="roundSelector" class="round-selector">
+                            <option value="1">1 El</option>
+                            <option value="2">2 El</option>
+                            <option value="3" selected>3 El</option>
+                            <option value="4">4 El</option>
+                            <option value="5">5 El</option>
+                            <option value="6">6 El</option>
+                            <option value="7">7 El</option>
+                            <option value="8">8 El</option>
+                            <option value="9">9 El</option>
+                            <option value="10">10 El</option>
+                        </select>
+                    </div>
+                    <div class="setup-buttons">
+                        <button class="btn-back" id="btnBackToMode">← GERİ</button>
+                        <button class="btn-start" id="btnStartMultiplayer">OYUNU BAŞLAT</button>
+                    </div>
+                </div>
             </div>
 
             <!-- Letters Display -->
@@ -67,6 +103,11 @@
                 <div class="found-words-container" id="foundWordsContainer">
                     <p class="empty-message">Henüz kelime bulunamadı...</p>
                 </div>
+            </div>
+
+            <!-- Player Panels (Multiplayer Mode) -->
+            <div class="player-panels-container" id="playerPanelsContainer" style="display: none;">
+                <!-- Player panels will be dynamically generated -->
             </div>
         </main>
 
@@ -124,6 +165,24 @@
             </div>
             <div class="definition-body" id="definitionBody">
                 <div class="loading-spinner">Yükleniyor...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Round Summary Modal -->
+    <div class="modal" id="roundSummaryModal">
+        <div class="modal-content round-summary-content">
+            <div class="round-summary-header">
+                <h2 id="roundSummaryTitle">1. EL TAMAMLANDI!</h2>
+            </div>
+            <div class="round-summary-body">
+                <h3>PUAN DURUMU</h3>
+                <div class="scores-table" id="scoresTable">
+                    <!-- Scores will be dynamically generated -->
+                </div>
+            </div>
+            <div class="round-summary-footer">
+                <button class="btn-continue" id="btnContinueRound">SONRAKİ ELE GEÇ →</button>
             </div>
         </div>
     </div>
