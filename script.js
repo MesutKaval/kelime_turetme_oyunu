@@ -806,7 +806,7 @@ function submitWordMultiplayer() {
             elements.wordInput.classList.remove('shake');
             elements.wordInput.value = '';
             switchToNextPlayer(); // Auto-switch on wrong answer
-        }, 500);
+        }, 200);
         return;
     }
 
@@ -818,7 +818,7 @@ function submitWordMultiplayer() {
             elements.wordInput.classList.remove('shake');
             elements.wordInput.value = '';
             switchToNextPlayer(); // Auto-switch on duplicate
-        }, 500);
+        }, 200);
         return;
     }
 
