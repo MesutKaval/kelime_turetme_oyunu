@@ -20,7 +20,10 @@ const gameState = {
     totalRounds: 3,
     turnTimeLeft: 5,
     timerPaused: false,
-    turnsPerRound: 5
+    turnsPerRound: 5,
+
+    // UI state
+    restartButtonAction: 'restart' // 'restart', 'showRoundSummary', or 'continueRound'
 };
 
 // ===== TURKISH LETTER FREQUENCIES =====
@@ -112,6 +115,7 @@ const elements = {
     foundCount: document.getElementById('foundCount'),
     timer: document.getElementById('timer'),
     score: document.getElementById('score'),
+    btnMainMenu: document.getElementById('btnMainMenu'),
 
     // Multiplayer
     playerPanelsContainer: document.getElementById('playerPanelsContainer'),
@@ -500,6 +504,15 @@ function restartGame() {
     elements.lettersSection.style.display = 'none';
     elements.inputSection.style.display = 'none';
     elements.foundWordsSection.style.display = 'none';
+    elements.playerPanelsContainer.style.display = 'none';
+
+    // Reset game state
+    gameState.gameMode = 'single';
+    gameState.currentRound = 1;
+    gameState.restartButtonAction = 'restart';
+
+    // Reset restart button to default
+    elements.btnRestart.textContent = 'YENİDEN OYNA';
 }
 
 // ===== WORD DEFINITION FROM TDK =====
@@ -633,6 +646,12 @@ function setupMultiplayerGame() {
 }
 
 function startMultiplayerRound() {
+    // CRITICAL: Clear any existing timer interval to prevent conflicts
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+        gameState.timerInterval = null;
+    }
+
     // Reset round state
     gameState.letters = generateLetters();
     gameState.foundWords = [];
@@ -860,17 +879,123 @@ function submitWordMultiplayer() {
 }
 
 function endRound() {
+    console.log('=== endRound CALLED ===');
+    console.log('Current round:', gameState.currentRound);
+
+    // Prevent multiple calls
+    if (!gameState.isPlaying) {
+        console.log('endRound already called, skipping');
+        return;
+    }
+
     gameState.isPlaying = false;
     clearInterval(gameState.timerInterval);
+    gameState.timerInterval = null;
     elements.wordInput.disabled = true;
 
     playEndSound();
 
-    // Show round summary
-    showRoundSummary();
+    // Show all words first (like end game)
+    showRoundWords();
+}
+
+function showRoundWords() {
+    console.log('=== showRoundWords CALLED ===');
+    console.log('Game mode:', gameState.gameMode);
+    console.log('Current round:', gameState.currentRound);
+
+    // Calculate statistics
+    const totalWords = gameState.validWords.length;
+    const foundCount = gameState.foundWords.length;
+    const missedCount = totalWords - foundCount;
+    const successPercentage = totalWords > 0 ? Math.round((foundCount / totalWords) * 100) : 0;
+
+    // Update modal header - show round number
+    const titleElement = document.querySelector('.stat-title .stat-value');
+    if (titleElement) {
+        titleElement.textContent = `${gameState.currentRound}. EL - TÜM KELİMELER`;
+    }
+
+    // Update statistics
+    document.getElementById('statsFound').textContent = foundCount;
+    document.getElementById('statsMissed').textContent = missedCount;
+    document.getElementById('statsTotal').textContent = totalWords;
+    document.getElementById('statsPercentage').textContent = successPercentage + '%';
+
+    // Hide final score (not relevant for round end)
+    elements.finalScore.parentElement.style.display = 'none';
+
+    // Group words by length
+    const wordsByLength = {};
+    gameState.validWords.forEach(word => {
+        const len = word.length;
+        if (!wordsByLength[len]) {
+            wordsByLength[len] = [];
+        }
+        wordsByLength[len].push(word);
+    });
+
+    Object.keys(wordsByLength).forEach(len => {
+        wordsByLength[len].sort((a, b) => a.localeCompare(b, 'tr-TR'));
+    });
+
+    const wordsGrid = document.getElementById('wordsGrid');
+    wordsGrid.innerHTML = '';
+
+    const lengths = Object.keys(wordsByLength).map(Number).sort((a, b) => a - b);
+
+    lengths.forEach(length => {
+        const words = wordsByLength[length];
+        const column = document.createElement('div');
+        column.className = 'word-column';
+        column.classList.add(`word-column-${length}`);
+
+        const header = document.createElement('div');
+        header.className = 'word-column-header';
+        header.textContent = `${length} HARF`;
+        column.appendChild(header);
+
+        const wordList = document.createElement('div');
+        wordList.className = 'word-column-list';
+
+        words.forEach(word => {
+            const wordItem = document.createElement('div');
+            wordItem.className = 'word-item';
+
+            if (gameState.foundWords.includes(word)) {
+                wordItem.classList.add('found');
+            } else {
+                wordItem.classList.add('missed');
+            }
+
+            wordItem.textContent = word;
+            wordItem.addEventListener('click', () => showWordDefinition(word));
+            wordList.appendChild(wordItem);
+        });
+
+        column.appendChild(wordList);
+        wordsGrid.appendChild(column);
+    });
+
+    // Change restart button to "Puan Durumuna Geç"
+    console.log('Setting restart button action to showRoundSummary');
+    elements.btnRestart.textContent = 'PUAN DURUMUNA GEÇ →';
+    gameState.restartButtonAction = 'showRoundSummary';
+    console.log('restartButtonAction set to:', gameState.restartButtonAction);
+
+    // Show modal
+    elements.endGameModal.style.display = ''; // Reset inline style from previous close
+    elements.endGameModal.classList.add('show');
 }
 
 function showRoundSummary() {
+    console.log(`showRoundSummary çağrıldı - El ${gameState.currentRound}/${gameState.totalRounds}`);
+    console.log('Modal element:', elements.roundSummaryModal);
+
+    // CRITICAL: Make sure endGameModal is completely hidden
+    elements.endGameModal.classList.remove('show');
+    elements.endGameModal.style.display = 'none';
+
     // Update title
     elements.roundSummaryTitle.textContent = `${gameState.currentRound}. EL TAMAMLANDI!`;
 
@@ -900,8 +1025,10 @@ function showRoundSummary() {
     // Update button text
     if (gameState.currentRound < gameState.totalRounds) {
         elements.btnContinueRound.textContent = 'SONRAKİ ELE GEÇ →';
+        console.log('Buton metni: SONRAKİ ELE GEÇ →');
     } else {
         elements.btnContinueRound.textContent = 'SONUÇLARI GÖR →';
+        console.log('Buton metni: SONUÇLARI GÖR →');
     }
 
     // Show modal
@@ -909,11 +1036,15 @@ function showRoundSummary() {
 }
 
 function continueToNextRound() {
+    console.log('=== continueToNextRound CALLED ===');
+    console.log('Current round before increment:', gameState.currentRound);
+    console.log('Total rounds:', gameState.totalRounds);
     elements.roundSummaryModal.classList.remove('show');
 
     if (gameState.currentRound < gameState.totalRounds) {
-        // Start next round
+        // Increment round BEFORE starting next round
         gameState.currentRound++;
+        console.log(`Sonraki ele geçiliyor: El ${gameState.currentRound}/${gameState.totalRounds}`);
         startMultiplayerRound();
     } else {
         // Game over, show final results
@@ -1028,8 +1159,27 @@ elements.btnStartMultiplayer.addEventListener('click', setupMultiplayerGame);
 // Round summary
 elements.btnContinueRound.addEventListener('click', continueToNextRound);
 
-// Restart game
-elements.btnRestart.addEventListener('click', restartGame);
+// Restart game - handle different actions based on game state
+elements.btnRestart.addEventListener('click', () => {
+    console.log('=== RESTART BUTTON CLICKED ===');
+    console.log('Current restartButtonAction:', gameState.restartButtonAction);
+    console.log('Game mode:', gameState.gameMode);
+    console.log('Current round:', gameState.currentRound);
+
+    if (gameState.restartButtonAction === 'showRoundSummary') {
+        console.log('Action: Showing round summary');
+        elements.endGameModal.classList.remove('show');
+        console.log('End game modal closed');
+        // Add small delay to allow modal close animation to complete
+        setTimeout(() => {
+            console.log('Calling showRoundSummary after delay...');
+            showRoundSummary();
+        }, 300);
+    } else {
+        console.log('Action: Restarting game');
+        restartGame();
+    }
+});
 elements.btnCloseDefinition.addEventListener('click', closeDefinitionModal);
 
 // Close definition modal when clicking outside
@@ -1078,3 +1228,20 @@ window.addEventListener('DOMContentLoaded', async () => {
     elements.btnMultiplayer.innerHTML = '<span class="mode-icon">👥</span><span class="mode-title">ÇOK OYUNCU</span><span class="mode-desc">Sırayla oyna, en yüksek puanı topla</span>';
 });
 
+// Main menu button
+elements.btnMainMenu.addEventListener('click', () => {
+    // Stop any ongoing game
+    if (gameState.timerInterval) {
+        clearInterval(gameState.timerInterval);
+        gameState.timerInterval = null;
+    }
+    gameState.isPlaying = false;
+
+    // Close any open modals
+    elements.endGameModal.classList.remove('show');
+    elements.roundSummaryModal.classList.remove('show');
+    elements.definitionModal.classList.remove('show');
+
+    // Reset and show start screen
+    restartGame();
+});

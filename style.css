@@ -31,6 +31,13 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 30px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .logo h1 {
@@ -46,6 +53,7 @@ body {
 .stats {
     display: flex;
     gap: 30px;
+    margin-left: auto;
 }
 
 .timer-container,
@@ -94,6 +102,38 @@ body {
 .score {
     color: #ffd93d;
     text-shadow: 0 0 20px rgba(255, 217, 61, 0.5);
+}
+
+/* ===== MAIN MENU BUTTON ===== */
+.btn-main-menu {
+    position: absolute;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn-main-menu span {
+    font-size: 1.5rem;
+}
+
+.btn-main-menu:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+}
+
+.btn-main-menu:active {
+    transform: scale(0.95);
 }
 
 /* ===== START SCREEN ===== */
@@ -1046,7 +1086,7 @@ body {
     border: 3px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     padding: 20px 30px;
-    min-width: 150px;
+    width: 200px;
     text-align: center;
     transition: all 0.3s ease;
 }
