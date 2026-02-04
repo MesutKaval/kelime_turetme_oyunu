@@ -523,75 +523,90 @@ async function showWordDefinition(word) {
     elements.definitionWord.textContent = word;
     elements.definitionBody.innerHTML = '<div class="loading-spinner">Yükleniyor...</div>';
 
-    try {
-        const tdkUrl = `https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}`;
-        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(tdkUrl)}`;
-        
-        const response = await fetch(proxyUrl, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
+    const tdkUrl = `https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}`;
+    
+    // HTTPS uyumlu CORS proxy'leri sırayla dene
+    const proxies = [
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(tdkUrl)}`,
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(tdkUrl)}`,
+        `https://corsproxy.io/?${encodeURIComponent(tdkUrl)}`
+    ];
+
+    for (let i = 0; i < proxies.length; i++) {
+        try {
+            const response = await fetch(proxies[i], {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
             }
-        });
 
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
-        }
+            const data = await response.json();
 
-        const data = await response.json();
-
-        if (!data || data.error || !Array.isArray(data) || data.length === 0) {
-            elements.definitionBody.innerHTML = '<div class="error-message">Bu kelime için anlam bulunamadı.</div>';
-            return;
-        }
-
-        if (!data[0].anlamlarListe || data[0].anlamlarListe.length === 0) {
-            elements.definitionBody.innerHTML = '<div class="error-message">Bu kelime için anlam bulunamadı.</div>';
-            return;
-        }
-
-        // Build definition HTML
-        let definitionHTML = '<div class="definition-content">';
-
-        data[0].anlamlarListe.forEach((anlam, index) => {
-            definitionHTML += `
-                <div class="definition-item">
-                    <div class="definition-meaning">
-                        <strong>${index + 1}.</strong> ${anlam.anlam}
-                    </div>`;
-
-            // Add examples if available
-            if (anlam.orneklerListe && anlam.orneklerListe.length > 0) {
-                anlam.orneklerListe.forEach(ornek => {
-                    if (ornek.ornek) {
-                        definitionHTML += `
-                            <div class="definition-example">
-                                "${ornek.ornek}"
-                            </div>`;
-                    }
-                });
+            if (!data || data.error || !Array.isArray(data) || data.length === 0) {
+                if (i === proxies.length - 1) {
+                    elements.definitionBody.innerHTML = '<div class="error-message">Bu kelime için anlam bulunamadı.</div>';
+                }
+                throw new Error('Geçersiz yanıt');
             }
+
+            if (!data[0].anlamlarListe || data[0].anlamlarListe.length === 0) {
+                elements.definitionBody.innerHTML = '<div class="error-message">Bu kelime için anlam bulunamadı.</div>';
+                return;
+            }
+
+            // Build definition HTML
+            let definitionHTML = '<div class="definition-content">';
+
+            data[0].anlamlarListe.forEach((anlam, index) => {
+                definitionHTML += `
+                    <div class="definition-item">
+                        <div class="definition-meaning">
+                            <strong>${index + 1}.</strong> ${anlam.anlam}
+                        </div>`;
+
+                // Add examples if available
+                if (anlam.orneklerListe && anlam.orneklerListe.length > 0) {
+                    anlam.orneklerListe.forEach(ornek => {
+                        if (ornek.ornek) {
+                            definitionHTML += `
+                                <div class="definition-example">
+                                    "${ornek.ornek}"
+                                </div>`;
+                        }
+                    });
+                }
+
+                definitionHTML += '</div>';
+            });
 
             definitionHTML += '</div>';
-        });
+            elements.definitionBody.innerHTML = definitionHTML;
+            return; // Başarılı, fonksiyondan çık
 
-        definitionHTML += '</div>';
-        elements.definitionBody.innerHTML = definitionHTML;
-
-    } catch (error) {
-        console.error('TDK API hatası:', error);
-        elements.definitionBody.innerHTML = `
-            <div class="error-message">
-                ⚠️ TDK'ya bağlanılamıyor.<br>
-                <small style="margin-top: 10px; display: block;">
-                    <a href="https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}" 
-                       target="_blank" 
-                       style="color: #4ecdc4; text-decoration: underline;">
-                       TDK'da kelimeyi aç
-                    </a>
-                </small>
-            </div>
-        `;
+        } catch (error) {
+            console.error(`Proxy ${i + 1} hatası:`, error);
+            // Son proxy de başarısız olduysa hata göster
+            if (i === proxies.length - 1) {
+                elements.definitionBody.innerHTML = `
+                    <div class="error-message">
+                        ⚠️ TDK'ya bağlanılamıyor.<br>
+                        <small style="margin-top: 10px; display: block;">
+                            <a href="https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}" 
+                               target="_blank" 
+                               style="color: #4ecdc4; text-decoration: underline;">
+                               TDK'da kelimeyi aç
+                            </a>
+                        </small>
+                    </div>
+                `;
+            }
+            // Sonraki proxy'yi dene
+        }
     }
 }
 
