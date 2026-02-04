@@ -479,6 +479,7 @@ function endGame() {
             wordItem.textContent = word;
 
             // Add click handler to show definition
+            wordItem.style.cursor = 'pointer';
             wordItem.addEventListener('click', () => showWordDefinition(word));
 
             wordList.appendChild(wordItem);
@@ -523,19 +524,28 @@ async function showWordDefinition(word) {
     elements.definitionBody.innerHTML = '<div class="loading-spinner">Yükleniyor...</div>';
 
     try {
-        // TDK API endpoint with CORS proxy
         const tdkUrl = `https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}`;
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(tdkUrl)}`;
-
-        const response = await fetch(proxyUrl);
+        const proxyUrl = `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(tdkUrl)}`;
+        
+        const response = await fetch(proxyUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
 
         if (!response.ok) {
-            throw new Error('Bağlantı hatası');
+            throw new Error(`HTTP ${response.status}`);
         }
 
         const data = await response.json();
 
-        if (!data || data.error || !data[0] || !data[0].anlamlarListe) {
+        if (!data || data.error || !Array.isArray(data) || data.length === 0) {
+            elements.definitionBody.innerHTML = '<div class="error-message">Bu kelime için anlam bulunamadı.</div>';
+            return;
+        }
+
+        if (!data[0].anlamlarListe || data[0].anlamlarListe.length === 0) {
             elements.definitionBody.innerHTML = '<div class="error-message">Bu kelime için anlam bulunamadı.</div>';
             return;
         }
@@ -570,7 +580,18 @@ async function showWordDefinition(word) {
 
     } catch (error) {
         console.error('TDK API hatası:', error);
-        elements.definitionBody.innerHTML = '<div class="error-message">⚠️ Bağlantı yok</div>';
+        elements.definitionBody.innerHTML = `
+            <div class="error-message">
+                ⚠️ TDK'ya bağlanılamıyor.<br>
+                <small style="margin-top: 10px; display: block;">
+                    <a href="https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}" 
+                       target="_blank" 
+                       style="color: #4ecdc4; text-decoration: underline;">
+                       TDK'da kelimeyi aç
+                    </a>
+                </small>
+            </div>
+        `;
     }
 }
 
