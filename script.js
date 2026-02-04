@@ -534,9 +534,9 @@ async function showWordDefinition(word) {
 
     for (let i = 0; i < proxies.length; i++) {
         try {
-            // 3 saniye timeout ekle
+            // 2 saniye timeout ekle
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3000);
+            const timeoutId = setTimeout(() => controller.abort(), 2000);
             
             const response = await fetch(proxies[i], {
                 method: 'GET',
