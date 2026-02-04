@@ -525,11 +525,13 @@ async function showWordDefinition(word) {
 
     const tdkUrl = `https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}`;
     
-    // HTTPS uyumlu CORS proxy'leri sırayla dene
+    // Daha fazla CORS proxy seçeneği
     const proxies = [
+        `https://api.allorigins.win/get?url=${encodeURIComponent(tdkUrl)}`,
+        `https://corsproxy.io/?${encodeURIComponent(tdkUrl)}`,
         `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(tdkUrl)}`,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(tdkUrl)}`,
-        `https://corsproxy.io/?${encodeURIComponent(tdkUrl)}`
+        `https://thingproxy.freeboard.io/fetch/${tdkUrl}`,
+        `https://cors-anywhere.herokuapp.com/${tdkUrl}`
     ];
 
     for (let i = 0; i < proxies.length; i++) {
@@ -545,7 +547,12 @@ async function showWordDefinition(word) {
                 throw new Error(`HTTP ${response.status}`);
             }
 
-            const data = await response.json();
+            let data = await response.json();
+            
+            // allorigins.win özel format döndürür
+            if (data.contents) {
+                data = JSON.parse(data.contents);
+            }
 
             if (!data || data.error || !Array.isArray(data) || data.length === 0) {
                 if (i === proxies.length - 1) {
@@ -595,11 +602,11 @@ async function showWordDefinition(word) {
                 elements.definitionBody.innerHTML = `
                     <div class="error-message">
                         ⚠️ TDK'ya bağlanılamıyor.<br>
-                        <small style="margin-top: 10px; display: block;">
+                        <small style="margin-top: 15px; display: block; font-size: 0.9rem;">
                             <a href="https://sozluk.gov.tr/gts?ara=${encodeURIComponent(word)}" 
                                target="_blank" 
-                               style="color: #4ecdc4; text-decoration: underline;">
-                               TDK'da kelimeyi aç
+                               style="color: #4ecdc4; text-decoration: underline; font-weight: 600;">
+                               TDK sitesinde aç →
                             </a>
                         </small>
                     </div>
