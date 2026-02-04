@@ -529,19 +529,24 @@ async function showWordDefinition(word) {
     const proxies = [
         `https://api.allorigins.win/get?url=${encodeURIComponent(tdkUrl)}`,
         `https://corsproxy.io/?${encodeURIComponent(tdkUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(tdkUrl)}`,
-        `https://thingproxy.freeboard.io/fetch/${tdkUrl}`,
-        `https://cors-anywhere.herokuapp.com/${tdkUrl}`
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(tdkUrl)}`
     ];
 
     for (let i = 0; i < proxies.length; i++) {
         try {
+            // 3 saniye timeout ekle
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 3000);
+            
             const response = await fetch(proxies[i], {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
-                }
+                },
+                signal: controller.signal
             });
+            
+            clearTimeout(timeoutId);
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}`);
@@ -596,7 +601,6 @@ async function showWordDefinition(word) {
             return; // Başarılı, fonksiyondan çık
 
         } catch (error) {
-            console.error(`Proxy ${i + 1} hatası:`, error);
             // Son proxy de başarısız olduysa hata göster
             if (i === proxies.length - 1) {
                 elements.definitionBody.innerHTML = `
