@@ -148,11 +148,10 @@ super_bulmaca/
 ## 🎯 İpuçları
 
 1. **Kısa Kelimelerle Başlayın:** 4-5 harfli kelimeleri hızlıca bulun
-2. **Yaygın Ekler:** -ler, -lar, -den, -dan gibi ekleri deneyin
-3. **Sesli Harf Kombinasyonları:** Türkçe'de sesli uyumu önemlidir
-4. **En Uzun Kelimeyi Hedefleyin:** 2x bonus için en uzun kelimeyi bulmaya çalışın
-5. **Zaman Yönetimi:** İlk 50 saniyede maksimum kelime, son 50 saniyede uzun kelimeler
-
+2. **Sesli Harf Kombinasyonları:** Türkçe'de sesli uyumu önemlidir
+3. **En Uzun Kelimeyi Hedefleyin:** 2x bonus için en uzun kelimeyi bulmaya çalışın
+4. **Zaman Yönetimi:** İlk 50 saniyede maksimum kelime, son 50 saniyede uzun kelimelerİ bulmaya çalışabilirsiniz.
+   
 ## 🤝 Katkıda Bulunma
 
 Katkılarınızı bekliyoruz! Lütfen:
